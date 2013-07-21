@@ -1,0 +1,90 @@
+import unittest
+import urllib2
+import json
+import re
+
+class Posts:
+  DB = []
+
+  @classmethod
+  def add(klass, post):
+    klass.DB.append(post)
+
+  @classmethod
+  def all(klass):
+    return klass.DB
+
+class FoChanData:
+  def __init__(self):
+    # resp = urllib2.urlopen('https://api.4chan.org/b/catalog.json')
+    self.resp = open('catalog.json', 'r')
+    self.json = json.loads(self.resp.read())
+
+  def pages(self):
+    return self.json
+
+  def threads(self):
+    return self.pages['threads']
+
+  def all_posts(self):
+    posts_with_text = []
+    for thread in self.threads:
+      if "com" in thread:
+        posts_with_text.append(thread)
+      if "last_replies" in thread:
+        for reply in thread["last_replies"]:
+          if "com" in reply:
+            posts_with_text.append reply
+
+  def save_all(self):
+    for thread in self.threads:
+
+# class WordCount:
+#   @classmethod
+#   def
+
+class TestSequenceFunctions(unittest.TestCase):
+
+  def test_adding_and_getting_from_database(self):
+    Posts.add("fuck")
+    print(Posts.all())
+    self.assertEqual(len(Posts.all()), 1)
+
+  def test_should_have_correct_pages(self):
+    data = FoChanData()
+    self.assertEqual(len(data.pages()), 16)
+
+  def test_should_save_all_posts(self):
+
+    data = FoChan
+    # for page in client.json:
+    #   for thread in page['threads']:
+    #     if "com" in thread:
+    #       matches = matches + thread["com"].count("fag")
+
+    # print matches
+#
+  # def setUp(self):
+  #   self.seq = range(10)
+
+#   def test_shuffle(self):
+#     # make sure the shuffled sequence does not lose any elements
+#     random.shuffle(self.seq)
+#     self.seq.sort()
+#     self.assertEqual(self.seq, range(10))
+#
+#     # should raise an exception for an immutable sequence
+#     self.assertRaises(TypeError, random.shuffle, (1,2,3))
+#
+#   def test_choice(self):
+#     element = random.choice(self.seq)
+#     self.assertTrue(element in self.seq)
+#
+#   def test_sample(self):
+#     with self.assertRaises(ValueError):
+#       random.sample(self.seq, 20)
+#     for element in random.sample(self.seq, 5):
+#       self.assertTrue(element in self.seq)
+#
+if __name__ == '__main__':
+  unittest.main()
