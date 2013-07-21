@@ -33,7 +33,8 @@ class Posts:
 class FoChanClient:
   @classmethod
   def fetch(klass, board):
-    return urllib.request.urlopen("https://api.4chan.org/b/catalog.json").read().decode('utf-8')
+    url = "https://api.4chan.org/{0}/catalog.json".format(board)
+    return urllib.request.urlopen(url).read().decode('utf-8')
 
 class Parser:
   def __init__(self, resp):
